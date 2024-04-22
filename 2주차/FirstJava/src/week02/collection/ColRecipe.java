@@ -11,16 +11,16 @@ public class ColRecipe {
     static Map<Integer, String> recipeMap;
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static StringBuilder sb;
+    static StringBuilder sb = new StringBuilder();
     static String structureType = null;
     static String recipeTitle = null;
 
-    //타입 검증
+    //입력 자료구조 타입
     static void inputStructureType() throws IOException {
         structureType = br.readLine();
     }
 
-    // input recipeProcess
+    // input recipeProcess to List
     static void inputRecipeProcess() throws IOException {
         recipeTitle = br.readLine();
 
@@ -34,20 +34,22 @@ public class ColRecipe {
         }
     }
 
-    // output recipeProcess
-    static void outputRecipeProcessList() {
-        sb = new StringBuilder();
+    // output recipeProcess to List
+    static void outputRecipeProcessToList() {
         sb.append("[ ").append(structureType).append(" 으로 저장된 ").append(recipeTitle).append(" ]").append("\n");
         for (int i = 1; i <= recipeList.size(); i++) {
             sb.append(i + ". ").append(recipeList.get(i - 1)).append("\n");
         }
     }
 
-    static void outputRecipeProcessSet() {
+    // input recipeProcess to Set
+    static void inputRecipeProcessToSet() {
         recipeSet = new LinkedHashSet<>();
         recipeSet.addAll(recipeList);
+    }
 
-        sb = new StringBuilder();
+    // output recipeProcess to Set
+    static void outputRecipeProcessToSet() {
         sb.append("[ ").append(structureType).append(" 으로 저장된 ").append(recipeTitle).append(" ]").append("\n");
 
         int num = 1;
@@ -57,15 +59,18 @@ public class ColRecipe {
         }
     }
 
-    static void outputRecipeProcessMap() {
-        recipeMap = new HashMap<>();
-
+    // input recipeProcess to map
+    static void inputRecipeProcessToMap() {
         int num = 1;
         for (String value : recipeList) {
             recipeMap.put(num++, value);
         }
+    }
 
-        sb = new StringBuilder();
+    // output recipeProcess to Map
+    static void outputRecipeProcessToMap() {
+        recipeMap = new HashMap<>();
+
         sb.append("[ ").append(structureType).append(" 으로 저장된 ").append(recipeTitle).append(" ]").append("\n");
         for (Map.Entry<Integer, String> integerStringEntry : recipeMap.entrySet()) {
             sb.append(integerStringEntry.getKey() + ". ").append(integerStringEntry.getValue()).append("\n");
@@ -76,15 +81,20 @@ public class ColRecipe {
         inputStructureType();
         inputRecipeProcess();
 
-        if (structureType.equals("List")) {
-            outputRecipeProcessList();
-        } else if (structureType.equals("Set")) {
-            outputRecipeProcessSet();
-        } else if (structureType.equals("Map")) {
-            outputRecipeProcessMap();
-        } else {
-            System.out.println("타입 불일치");
-            return;
+        switch (structureType) {
+            case "List" -> outputRecipeProcessToList();
+            case "Set" -> {
+                inputRecipeProcessToSet();
+                outputRecipeProcessToSet();
+            }
+            case "Map" -> {
+                inputRecipeProcessToMap();
+                outputRecipeProcessToMap();
+            }
+            default -> {
+                System.out.println("타입 불일치");
+                return;
+            }
         }
         System.out.println(sb);
     }
